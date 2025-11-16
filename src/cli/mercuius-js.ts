@@ -12,14 +12,14 @@ async function main(): Promise<void> {
     console.log(`${name} v${version}`);
     console.log('');
     console.log('Uso:');
-    console.log('  mercuius-js start       Inicia o worker padrão de webhooks (BullMQ + Redis)');
+    console.log('  mercurius-js start      Inicia o worker padrão de webhooks (BullMQ + Redis)');
     console.log('');
     console.log('Variáveis de ambiente relevantes:');
     console.log('  REDIS_HOST              Host do Redis (default: 127.0.0.1)');
     console.log('  REDIS_PORT              Porta do Redis (default: 6379)');
     console.log('  REDIS_DB                DB do Redis (default: 0)');
-    console.log('  WEBHOOK_QUEUE_NAME      Nome da fila principal (default: mercuius_webhooks)');
-    console.log('  WEBHOOK_DLQ_NAME        Nome da DLQ (default: mercuius_webhooks_dlq)');
+    console.log('  WEBHOOK_QUEUE_NAME      Nome da fila principal (default: mercurius_webhooks)');
+    console.log('  WEBHOOK_DLQ_NAME        Nome da DLQ (default: mercurius_webhooks_dlq)');
     process.exit(0);
   }
 
@@ -36,7 +36,7 @@ async function main(): Promise<void> {
   }
 
   console.error(`Comando desconhecido: ${command}`);
-  console.error('Use "mercuius-js help" para ver os comandos disponíveis.');
+  console.error('Use "mercurius-js help" para ver os comandos disponíveis.');
   process.exit(1);
 }
 

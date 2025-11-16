@@ -1,10 +1,10 @@
-# mercuius-js
+# mercurius-js
 
 > ⚠️ **Status**: Beta (`0.1.0`)
 
 Sistema de enfileiramento de tarefas assíncronas focado em **webhooks B2B**, baseado em **Node.js**, **TypeScript** (strict), **BullMQ** (Redis) e **Jest**, organizado em **Clean Architecture**.
 
-O objetivo do `mercuius-js` é ser um **worker de webhooks plugável** em qualquer aplicação Node (Fastify/Express/etc.), com tipagem de ponta a ponta, retries inteligentes e DLQ.
+O objetivo do `mercurius-js` é ser um **worker de webhooks plugável** em qualquer aplicação Node (Fastify/Express/etc.), com tipagem de ponta a ponta, retries inteligentes e DLQ.
 
 ---
 
@@ -23,7 +23,7 @@ O objetivo do `mercuius-js` é ser um **worker de webhooks plugável** em qualqu
   - Backoff exponencial com limite de tentativas.
   - Dead-Letter Queue (DLQ) para jobs que esgotaram os retries.
 - **CLI inclusa**:
-  - `mercuius-js start` para iniciar um worker padrão de webhooks.
+  - `mercurius-js start` para iniciar um worker padrão de webhooks.
 - **Integrações prontas**:
   - Helpers para Fastify e Express.
 - **Testes**:

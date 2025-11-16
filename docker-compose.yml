@@ -3,14 +3,14 @@ version: '3.9'
 services:
   redis:
     image: redis:7-alpine
-    container_name: mercuius-redis
+    container_name: mercurius-redis
     ports:
       - '6379:6379'
     command: ['redis-server', '--appendonly', 'no']
 
-  mercuius-worker:
+  mercurius-worker:
     build: .
-    container_name: mercuius-worker
+    container_name: mercurius-worker
     depends_on:
       - redis
     environment:
@@ -18,8 +18,8 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=0
-      - WEBHOOK_QUEUE_NAME=mercuius_webhooks
-      - WEBHOOK_DLQ_NAME=mercuius_webhooks_dlq
+      - WEBHOOK_QUEUE_NAME=mercurius_webhooks
+      - WEBHOOK_DLQ_NAME=mercurius_webhooks_dlq
     restart: unless-stopped
 
 

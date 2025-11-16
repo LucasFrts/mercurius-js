@@ -5,7 +5,7 @@ import { FileLogger } from '../../src/infra/logging/FileLogger';
 
 describe('FileLogger (integração com filesystem)', () => {
   it('deve criar diretório e arquivo diário e gravar linhas de log', async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mercuius-logs-'));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mercurius-logs-'));
     const logger = new FileLogger({
       directory: tmpDir,
       filePrefix: 'test-logger'

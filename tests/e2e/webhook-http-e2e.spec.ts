@@ -17,8 +17,8 @@ const REDIS_CONNECTION = {
   db: Number(process.env.REDIS_DB ?? 3) // DB separado para E2E
 };
 
-const QUEUE_NAME = 'e2e_mercuius_webhooks';
-const DLQ_NAME = 'e2e_mercuius_webhooks_dlq';
+const QUEUE_NAME = 'e2e_mercurius_webhooks';
+const DLQ_NAME = 'e2e_mercurius_webhooks_dlq';
 
 interface ReceivedRequest {
   method?: string;
@@ -32,7 +32,7 @@ describe('E2E HTTP webhook (worker + FetchWebhookProcessor + servidor HTTP real)
   let logDir: string;
 
   beforeAll(async () => {
-    logDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mercuius-e2e-logs-'));
+    logDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mercurius-e2e-logs-'));
     redis = new IORedis(REDIS_CONNECTION);
     await redis.flushdb();
   }, 20000);
@@ -128,7 +128,7 @@ describe('E2E HTTP webhook (worker + FetchWebhookProcessor + servidor HTTP real)
           'x-webhook-event': 'e2e.test'
         },
         body: {
-          message: 'hello from mercuius-js e2e'
+          message: 'hello from mercurius-js e2e'
         }
       };
 

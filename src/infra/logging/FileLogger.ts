@@ -10,7 +10,7 @@ export interface FileLoggerOptions {
   directory?: string;
   /**
    * Prefixo do nome do arquivo.
-   * Exemplo: mercuius-js-2025-11-16.log
+   * Exemplo: mercurius-js-2025-11-16.log
    */
   filePrefix?: string;
 }
@@ -21,8 +21,8 @@ export class FileLogger implements LoggerPort {
   private initialized = false;
 
   constructor(options: FileLoggerOptions = {}) {
-    this.directory = options.directory ?? process.env.MERCUIUS_LOG_DIR ?? path.resolve('logs');
-    this.filePrefix = options.filePrefix ?? 'mercuius-js';
+    this.directory = options.directory ?? process.env.MERCURIUS_LOG_DIR ?? path.resolve('logs');
+    this.filePrefix = options.filePrefix ?? 'mercurius-js';
   }
 
   private async ensureDir(): Promise<void> {

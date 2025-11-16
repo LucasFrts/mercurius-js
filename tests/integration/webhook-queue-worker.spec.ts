@@ -12,8 +12,8 @@ const REDIS_CONNECTION = {
   db: Number(process.env.REDIS_DB ?? 1) // usar DB diferente para testes
 };
 
-const QUEUE_NAME = 'test_mercuius_webhooks';
-const DLQ_NAME = 'test_mercuius_webhooks_dlq';
+const QUEUE_NAME = 'test_mercurius_webhooks';
+const DLQ_NAME = 'test_mercurius_webhooks_dlq';
 
 class InMemoryWebhookProcessor implements WebhookProcessorPort {
   public calls: WebhookJobPayload[] = [];

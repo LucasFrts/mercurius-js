@@ -1,4 +1,4 @@
-// Public API de mercuius-js
+// Public API de mercurius-js
 
 // ---- Named exports (tipos e classes) ----
 
@@ -56,7 +56,7 @@ export interface DispatchOptions {
  *
  * Uso:
  *
- *   import mercurius from 'mercuius-js';
+ *   import mercurius from 'mercurius-js';
  *
  *   await mercurius({
  *     url: tenant.webhookUrl,

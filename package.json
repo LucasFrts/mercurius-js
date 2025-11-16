@@ -1,11 +1,11 @@
 {
-  "name": "mercuius-js",
+  "name": "mercurius-js",
   "version": "0.1.0",
   "description": "Worker de webhooks B2B com BullMQ, TypeScript e Clean Architecture.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "mercuius-js": "dist/cli/mercuius-js.js"
+    "mercurius-js": "dist/cli/mercuius-js.js"
   },
   "scripts": {
     "build": "tsc",

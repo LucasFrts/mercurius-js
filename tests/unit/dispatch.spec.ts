@@ -11,7 +11,7 @@ class FakeEnqueueService {
   }
 }
 
-describe('mercuius/dispatchWebhook (dispatcher DX)', () => {
+describe('mercurius/dispatchWebhook (dispatcher DX)', () => {
   const payload: WebhookJobPayload = {
     url: 'https://example.com/webhook',
     method: 'POST',
@@ -19,7 +19,7 @@ describe('mercuius/dispatchWebhook (dispatcher DX)', () => {
     body: { hello: 'world' }
   };
 
-  it('mercuius(payload, { service }) deve delegar para o serviço de enqueue com DTO correto', async () => {
+  it('mercurius(payload, { service }) deve delegar para o serviço de enqueue com DTO correto', async () => {
     const fake = new FakeEnqueueService();
 
     const result = await mercurius(payload, {

@@ -1,0 +1,21 @@
+{
+  "name": "ai-callbacks-example",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Exemplo de uso do mercurius-js em uma plataforma de AI para análise de documentos/chamadas.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start:dev": "ts-node src/api/index.ts"
+  },
+  "dependencies": {
+    "mercurius-js": "^0.1.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
+
+

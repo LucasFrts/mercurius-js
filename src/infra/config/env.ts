@@ -3,9 +3,9 @@ export const REDIS_PORT = Number(process.env.REDIS_PORT ?? 6379);
 export const REDIS_DB = Number(process.env.REDIS_DB ?? 0);
 
 export const WEBHOOK_QUEUE_NAME =
-  process.env.WEBHOOK_QUEUE_NAME ?? 'mercuius_webhooks';
+  process.env.WEBHOOK_QUEUE_NAME ?? 'mercurius_webhooks';
 
 export const WEBHOOK_DLQ_NAME =
-  process.env.WEBHOOK_DLQ_NAME ?? 'mercuius_webhooks_dlq';
+  process.env.WEBHOOK_DLQ_NAME ?? 'mercurius_webhooks_dlq';
 
 
