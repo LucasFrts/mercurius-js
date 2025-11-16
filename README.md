@@ -73,118 +73,113 @@ yarn add mercuius-js
 
 ## Uso básico
 
-### 1. Configurar fila e serviço de enfileiramento na sua API
+### Despachar um webhook com a função principal `mercurius(...)`
+
+A forma mais simples de usar o pacote é importar o default `mercurius` e chamar a função com um `WebhookJobPayload`:
 
 ```ts
-// mercuius-bootstrap.ts
-import {
-  BullMQWebhookQueue,
-  EnqueueWebhookJobService,
-} from 'mercuius-js';
+import mercurius from 'mercuius-js';
 
-const queue = new BullMQWebhookQueue({
-  queueName: process.env.WEBHOOK_QUEUE_NAME ?? 'mercuius_webhooks',
-  connection: {
-    host: process.env.REDIS_HOST ?? '127.0.0.1',
-    port: Number(process.env.REDIS_PORT ?? 6379),
-    db: Number(process.env.REDIS_DB ?? 0),
+// Ex.: dentro de um caso de uso de criação de usuário
+await mercurius({
+  url: tenant.webhookUrl, // URL configurada pelo cliente/admin
+  method: 'POST',
+  headers: {
+    'content-type': 'application/json',
+    'x-webhook-event': 'user.created',
+    'x-webhook-tenant': tenant.id,
+    // exemplo: assinatura HMAC do evento
+    // 'x-webhook-signature': signHmac(event, tenant.secret),
   },
+  body: {
+    event: 'user.created',
+    tenantId: tenant.id,
+    user: createdUser,
+  },
+}, {
+  maxAttempts: 5,
+  // delayMs: 1000, // opcional
 });
-
-export const enqueueWebhookJob = new EnqueueWebhookJobService(queue);
 ```
 
-### 2. Enfileirar um webhook em um caso de uso (ex.: criação de usuário)
+Sua API responde rápido com os dados de domínio (ex.: usuário criado) e o `mercurius-js` trata o webhook em background via fila.
+
+---
+
+## Integração com Fastify
+
+Um exemplo típico é chamar o `mercurius` **dentro do fluxo da rota**, depois de criar o recurso de domínio:
 
 ```ts
-// Em um use case / handler da sua API:
-await enqueueWebhookJob.execute({
-  payload: {
-    url: tenant.webhookUrl, // URL configurada pelo cliente/admin
+import fastify from 'fastify';
+import mercurius from 'mercuius-js';
+
+const app = fastify();
+
+app.post('/users', async (request, reply) => {
+  const tenant = await loadTenantFromRequest(request);
+  const createdUser = await createUserUseCase(request.body);
+
+  await mercurius({
+    url: tenant.webhookUrl,
     method: 'POST',
     headers: {
       'content-type': 'application/json',
       'x-webhook-event': 'user.created',
       'x-webhook-tenant': tenant.id,
-      // exemplo: assinatura HMAC do evento
-      // 'x-webhook-signature': signHmac(event, tenant.secret),
     },
     body: {
       event: 'user.created',
       tenantId: tenant.id,
       user: createdUser,
     },
-  },
-  maxAttempts: 5,
+  });
+
+  return reply.code(201).send(createdUser);
 });
 ```
 
-Sua API responde rápido; o worker do `mercuius-js` trata o webhook em background.
-
----
-
-## Integração com Fastify
-
-```ts
-import fastify from 'fastify';
-import {
-  createFastifyWebhookHandler,
-  BullMQWebhookQueue,
-  EnqueueWebhookJobService,
-} from 'mercuius-js';
-
-const app = fastify();
-
-const queue = new BullMQWebhookQueue({
-  queueName: process.env.WEBHOOK_QUEUE_NAME ?? 'mercuius_webhooks',
-  connection: {
-    host: process.env.REDIS_HOST ?? '127.0.0.1',
-    port: Number(process.env.REDIS_PORT ?? 6379),
-    db: Number(process.env.REDIS_DB ?? 0),
-  },
-});
-
-const enqueueWebhookJob = new EnqueueWebhookJobService(queue);
-
-app.post(
-  '/webhooks',
-  createFastifyWebhookHandler(enqueueWebhookJob) // request.body deve ser WebhookJobPayload
-);
-```
-
-Você ainda pode adicionar validação de schema, autenticação/assinatura etc. antes de chamar o handler.
+Assim você não expõe uma rota genérica de webhook; apenas sua regra de negócio decide quando e para quem disparar.
 
 ---
 
 ## Integração com Express
 
+Mesma ideia em Express:
+
 ```ts
 import express from 'express';
 import bodyParser from 'body-parser';
-import {
-  createExpressWebhookHandler,
-  BullMQWebhookQueue,
-  EnqueueWebhookJobService,
-} from 'mercuius-js';
+import mercurius from 'mercuius-js';
 
 const app = express();
 app.use(bodyParser.json());
 
-const queue = new BullMQWebhookQueue({
-  queueName: process.env.WEBHOOK_QUEUE_NAME ?? 'mercuius_webhooks',
-  connection: {
-    host: process.env.REDIS_HOST ?? '127.0.0.1',
-    port: Number(process.env.REDIS_PORT ?? 6379),
-    db: Number(process.env.REDIS_DB ?? 0),
-  },
+app.post('/users', async (req, res, next) => {
+  try {
+    const tenant = await loadTenantFromRequest(req);
+    const createdUser = await createUserUseCase(req.body);
+
+    await mercurius({
+      url: tenant.webhookUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-webhook-event': 'user.created',
+        'x-webhook-tenant': tenant.id,
+      },
+      body: {
+        event: 'user.created',
+        tenantId: tenant.id,
+        user: createdUser,
+      },
+    });
+
+    return res.status(201).json(createdUser);
+  } catch (err) {
+    next(err);
+  }
 });
-
-const enqueueWebhookJob = new EnqueueWebhookJobService(queue);
-
-app.post(
-  '/webhooks',
-  createExpressWebhookHandler(enqueueWebhookJob)
-);
 ```
 
 ---
@@ -296,5 +291,3 @@ npm test -- --runTestsByPath tests/unit/job.spec.ts tests/unit/enqueue-webhook-j
 ## Licença
 
 ISC – veja o arquivo `LICENSE` (ou ajuste conforme sua necessidade ao publicar o pacote).
-
-# mercurius-js
