@@ -1,7 +1,7 @@
 {
   "name": "mercuius-js",
   "version": "0.1.0",
-  "description": "",
+  "description": "Worker de webhooks B2B com BullMQ, TypeScript e Clean Architecture.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -15,7 +15,17 @@
     "test:watch": "jest --watch",
     "test:integration": "cross-env NODE_ENV=test jest --runInBand --testPathPattern=integration"
   },
-  "keywords": [],
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "webhook",
+    "queue",
+    "bullmq",
+    "redis",
+    "typescript",
+    "node"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
