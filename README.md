@@ -1,10 +1,23 @@
 # mercurius-js
 
-> ⚠️ **Status**: Beta (`0.1.0`)
+> **Status: beta.** A API pública e os testes estão de pé; o que falta é rodagem em produção e a publicação no npm.
 
 Sistema de enfileiramento de tarefas assíncronas focado em **webhooks B2B**, baseado em **Node.js**, **TypeScript** (strict), **BullMQ** (Redis) e **Jest**, organizado em **Clean Architecture**.
 
 O objetivo do `mercurius-js` é ser um **worker de webhooks plugável** em qualquer aplicação Node (Fastify/Express/etc.), com tipagem de ponta a ponta, retries inteligentes e DLQ.
+
+```ts
+import mercurius from 'mercuius-js';
+
+await mercurius({
+  url: tenant.webhookUrl,
+  method: 'POST',
+  headers: { 'content-type': 'application/json', 'x-webhook-event': 'user.created' },
+  body: { event: 'user.created', user: createdUser },
+}, { maxAttempts: 5 });
+```
+
+Sua API responde na hora; a entrega do webhook, os retries com backoff exponencial e a ida para a DLQ acontecem no worker, fora do ciclo da requisição.
 
 ---
 
